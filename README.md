@@ -3,6 +3,12 @@ English | [简体中文](README-CN.md)
 
 # Build project code quickly
 
+## Overview
+
+* Building an API project
+* Building an RPC project
+* Connect the database to generate the corresponding 'Model'
+
 ## Using The Example
 
 Creating an HTTP Service  
