@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    demo-go:
+       build:
+          context: ./
+       container_name: demo-go
+       privileged: true
+       working_dir: /go/src/github.com/demo
+       ports:
+         - 9050:9050
+       volumes:
+         - .:/go/src/github.com/demo
+       
