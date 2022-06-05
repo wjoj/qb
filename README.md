@@ -51,14 +51,104 @@ qb model --tb table -f "account:password@tcp(host:port)/dbname" --fw gorm  -s sa
 qb hot --cm "go build ./tmp/demo" --cm "./tmp/demo" -p "demo" -d 4000
 ```
 
+* -c: Config path
 * --cm: The CMD command can be multiple
-* &nbsp;&nbsp;&nbsp;-p: The root directory
-* &nbsp;&nbsp;&nbsp;-d: Time interval for each execution, in ms
+* -p: The root directory
+* -d: Time interval for each execution, in ms
+* -t: When the number of triggering times reaches n, the command is forcibly executed again
+* --icdr: Included directories regular expressions
+* --ecdr: Encluded directories regular expressions
+* --ifr: Includes file regular expressions. For example, ".go$" The suffix. Go file changed
+* --efr: Exclude file regular expressions
 
+
+## Go
+
+Dockerfile
 ```sh
-docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 feizhuji/qb-hot:latest
+FROM wjojz/qb-hot:latest AS qb-hot
+
+FROM golang:1.18
+
+COPY --from=qb-hot /usr/bin/qb /usr/bin/
+
+ENTRYPOINT ["/usr/bin/qb", "hot"]
 ```
-Or
+
+build
 ```sh
-docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 feizhuji/qb-hot:latest --cm "go run main.go"
+docker build -t wjojz/qb-hot-go:latest .
+```
+
+run
+```sh
+docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 wjojz/qb-hot-go:latest  --cm "go run main.go"
+```
+
+
+## HTML
+
+Dockerfile
+```sh
+FROM wjojz/qb-hot:latest AS qb-hot
+
+FROM puppet/discocoreui
+
+COPY --from=qb-hot /usr/bin/qb /usr/bin/
+
+ENTRYPOINT ["/usr/bin/qb", "hot"]
+```
+
+build
+```sh
+docker build -t wjojz/qb-hot-html:latest .
+```
+run
+```sh
+docker run -it --rm -w "html/project" -v $(pwd):/html/project -p 9090:9090 wjojz/qb-hot-html:latest --cm "npm run build"
+```
+
+## PHP
+
+Dockerfile
+```sh
+FROM wjojz/qb-hot:latest AS qb-hot
+
+FROM php:7.4-cli
+
+COPY --from=qb-hot /usr/bin/qb /usr/bin/
+
+ENTRYPOINT ["/usr/bin/qb", "hot"]
+```
+
+build
+```sh
+docker build -t wjojz/qb-hot-php:latest .
+```
+run
+```sh
+docker run -it --rm -w "php/project" -v $(pwd):/php/project -p 9090:9090 wjojz/qb-hot-php:latest --cm "php hello.php"
+```
+
+Java
+
+Dockerfile
+```sh
+FROM wjojz/qb-hot:latest AS qb-hot
+
+FROM openjdk:11
+
+COPY --from=qb-hot /usr/bin/qb /usr/bin/
+
+ENTRYPOINT ["/usr/bin/qb", "hot"]
+```
+
+build
+```sh
+docker build -t wjojz/qb-hot-java:latest .
+```
+
+run
+```sh
+docker run -it --rm -w "java/project" -v $(pwd):/java/project -p 9090:9090 wjojz/qb-hot-java:latest --cm "java hello.java"
 ```

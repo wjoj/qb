@@ -1,6 +1,6 @@
 FROM wjojz/qb-hot:latest AS qb-hot
 
-FROM golang:1.18
+FROM puppet/discocoreui
 
 COPY --from=qb-hot /usr/bin/qb /usr/bin/
 

@@ -49,14 +49,37 @@ qb model --tb table -f "account:password@tcp(host:port)/dbname" --fw gorm  -s sa
 qb hot --cm "go build ./tmp/demo" --cm "./tmp/demo" -p "demo" -d 4000
 ```
 
-* --cm: CMD命令，可以多条
-* &nbsp;&nbsp;&nbsp;-p: 根目录
-* &nbsp;&nbsp;&nbsp;-d: 每次执行的时间间隔，单位：ms
+* -c: 配置路径
+* --cm: `CMD`命令可以为多个
+* -p: 跟目录
+* -d: 要执行时的时间间隔, 单位：ms
+* -t: 当触发次数达到n次时，强制执行命令
+* --icdr: 包含的目录正则表达式
+* --ecdr: 排除的目录正则表达式
+* --ifr: 包含文件正则表达式。例如,“.go$”后缀。只包含后缀名为`.go`文件改变
+* --efr: 排除文件正则表达式
+
+Go
 
 ```sh
-docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 feizhuji/qb-hot
+docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 wjojz/qb-hot:latest
 ```
-或
+or
 ```sh
-docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 feizhuji/qb-hot --cm "go run main.go"
+docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 wjojz/qb-hot:latest --cm "go run main.go"
+```
+
+HTML
+```sh
+docker run -it --rm -w "html/project" -v $(pwd):/html/project -p 9090:9090 wjojz/qb-hot:latest --cm "npm run build"
+```
+
+PHP
+```sh
+docker run -it --rm -w "php/project" -v $(pwd):/php/project -p 9090:9090 wjojz/qb-hot:latest --cm "php hello.php"
+```
+
+Java
+```sh
+docker run -it --rm -w "java/project" -v $(pwd):/java/project -p 9090:9090 wjojz/qb-hot:latest --cm "java hello.java"
 ```
