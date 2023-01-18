@@ -9,8 +9,34 @@
 * 构建RPC项目
 * 连接数据库生成对应的`Model`
 * 热运行`CMD`命令
+* rpm打包(默认二进制打包)
 
 ## 使用例子
+
+> rpm使用二进制打包
+
+```sh
+qb rpm -rs ./ -o ../pkg #二进制打包
+qb rpm -rs ./ -o ../pkg -starting -start /usr/bin/qb #二进制打包并设置开机启动
+```
+
+* -name: 包名
+* -version: 版本(格式：1.0.0)
+* -summary: 概要
+* -vendor: 供应商
+* -license: 签名
+* -url: 访问地址
+* -description: 描素
+* -changelog: 修改日志
+* -spec: spec路径(源码打包方式必须)
+* -roots: 要打包的根目录
+* -way: 打包方式(bin: 二进制打包 src: 源码打包)
+* -number: 发布次数
+* -src: 是否打包源码
+* -out: 打包后的路径
+* -starting: 是否设置开机启动
+* -start: 开机启动运行的程序
+* -reload: 服务重启运行的程序
 
 > 创建一个`HTTP`服务
 
@@ -64,22 +90,27 @@ Go
 ```sh
 docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 wjojz/qb-hot:latest
 ```
+
 or
+
 ```sh
 docker run -it --rm -w "/go/src/github.com/demo" -v $(pwd):/go/src/github.com/demo -p 9090:9090 wjojz/qb-hot:latest --cm "go run main.go"
 ```
 
 HTML
+
 ```sh
 docker run -it --rm -w "html/project" -v $(pwd):/html/project -p 9090:9090 wjojz/qb-hot:latest --cm "npm run build"
 ```
 
 PHP
+
 ```sh
 docker run -it --rm -w "php/project" -v $(pwd):/php/project -p 9090:9090 wjojz/qb-hot:latest --cm "php hello.php"
 ```
 
 Java
+
 ```sh
 docker run -it --rm -w "java/project" -v $(pwd):/java/project -p 9090:9090 wjojz/qb-hot:latest --cm "java hello.java"
 ```
