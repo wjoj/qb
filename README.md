@@ -10,6 +10,7 @@ English | [简体中文](README-CN.md)
 * Connect the database to generate the corresponding 'Model'
 * Run the CMD command hot
 * RPM packaging (Default binary packaging)
+* Support swagger commands
 
 ## Using The Example
 
